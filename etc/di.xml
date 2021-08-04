@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Godart\Audit\Model\ConfigInterface" type="Godart\Audit\Model\Config" />
+    <type name="Godart\Audit\Model\Config">
+        <arguments>
+            <argument name="data" xsi:type="object">Magento\Analytics\Model\Config\Data</argument>
+        </arguments>
+    </type>
+    <virtualType name="Godart\Audit\Model\Config\Data" type="Magento\Framework\Config\Data">
+        <arguments>
+            <argument name="reader" xsi:type="object">Godart\Audit\Model\Config\Reader</argument>
+            <argument name="cacheId" xsi:type="string">Godart_Audit_CacheId</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Godart\Audit\Model\Config\SchemaLocator" type="Magento\Framework\Config\SchemaLocator">
+        <arguments>
+            <argument name="realPath" xsi:type="string">urn:magento:module:Godart_Audit:etc/audit.xsd</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Godart\Audit\Model\Config\Reader\Xml" type="Magento\Framework\Config\Reader\Filesystem">
+        <arguments>
+            <argument name="reader" xsi:type="object">AuditReader</argument>
+            <argument name="cacheId" xsi:type="string">Godart_Audit_CacheId</argument>
+            <argument name="fileName" xsi:type="string">audit.xml</argument>
+            <argument name="idAttributes" xsi:type="array">
+                <item name="/config/entity" xsi:type="string">name</item>
+            </argument>
+        </arguments>
+    </virtualType>
+</config>

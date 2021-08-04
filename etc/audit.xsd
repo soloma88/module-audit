@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:simpleType name="phpClassName">
+        <xs:annotation>
+            <xs:documentation>
+                A string that matches a Fully Qualified Class Name from PHP, especially not starting
+                with a backslash as this is an invalid character to start a class name with but a
+                somewhat common mistake so this simple type can be used to validate against it
+                already
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:pattern value="(\\?[a-zA-Z_&#x7f;-&#xff;][a-zA-Z0-9_&#x7f;-&#xff;]*)(\\[a-zA-Z_&#x7f;-&#xff;][a-zA-Z0-9_&#x7f;-&#xff;]*)*"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:element name="config">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="entity" type="entityType" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="entityType">
+        <xs:sequence>
+            <xs:element name="fields" type="fields" minOccurs="1" />
+        </xs:sequence>
+        <xs:attribute name="disable" type="xs:boolean"/>
+        <xs:attribute name="type" type="phpClassName"/>
+        <xs:attribute name="name" type="xs:string"/>
+    </xs:complexType>
+    <xs:complexType name="fields">
+        <xs:choice>
+            <xs:choice>
+                <xs:any processContents="lax" minOccurs="0" maxOccurs="unbounded" />
+            </xs:choice>
+        </xs:choice>
+    </xs:complexType>
+</xs:schema>
